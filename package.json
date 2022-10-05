@@ -1,0 +1,58 @@
+{
+  "name": "@anedomansky/react-session",
+  "version": "1.0.0",
+  "description": "An easy-to-use session component with included warning and renewal modals.",
+  "main": "./dist/library.umd.js",
+  "module": "./dist/library.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/library.es.js",
+      "require": "./dist/library.umd.js"
+    }
+  },
+  "unpkg": "./dist/library.umd.js",
+  "jsdelivr": "./dist/library.umd.js",
+  "files": [
+    "dist"
+  ],
+  "types": "./dist/src/index.d.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anedomansky/react-session.git"
+  },
+  "keywords": [
+    "react",
+    "session",
+    "modal"
+  ],
+  "author": "Alexander Nedomansky <nedomanskya@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anedomansky/react-session/issues"
+  },
+  "homepage": "https://github.com/anedomansky/react-session#readme",
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.8.2",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.39.0",
+    "@typescript-eslint/parser": "^5.39.0",
+    "@vitejs/plugin-react": "^2.1.0",
+    "eslint": "^8.24.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.31.8",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0"
+  }
+}

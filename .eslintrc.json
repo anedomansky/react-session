@@ -20,7 +20,8 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
-    "plugin:jsx-a11y/recommended"
+    "plugin:jsx-a11y/recommended",
+    "plugin:react/jsx-runtime"
   ],
   "settings": {
     "react": {
@@ -52,6 +53,12 @@
       "warn",
       2
     ],
-    "react/jsx-indent-props": 0
+    "react/jsx-indent-props": 0,
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": "arrow-function"
+      }
+    ]
   }
 }

@@ -21,10 +21,12 @@
     "outDir": "dist",
     "jsx": "react-jsx",
     "declaration": true,
-    "emitDeclarationOnly": true
+    "emitDeclarationOnly": true,
+    "sourceMap": true
   },
   "include": [
-    "src",
+    "src/**/*",
+    "vite.config.*"
   ],
   "references": [
     {

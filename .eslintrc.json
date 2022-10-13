@@ -59,6 +59,14 @@
       {
         "namedComponents": "arrow-function"
       }
+    ],
+    "react/no-unknown-property": [
+      "error",
+      {
+        "ignore": [
+          "onCancel"
+        ]
+      }
     ]
   }
 }

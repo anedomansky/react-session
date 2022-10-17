@@ -15,8 +15,9 @@ const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) 
   const [hours, setHours] = useState<string>();
   const [minutes, setMinutes] = useState<string>();
   const [seconds, setSeconds] = useState<string>();
-  const [showWarnModal, setShowWarnModal] = useState<boolean>(false);
   const [remainingTime, setRemainingTime] = useState<number>(startTime);
+  const [showWarnModal, setShowWarnModal] = useState<boolean>(false);
+  const [showExpiredModal, setShowExpiredModal] = useState<boolean>(false);
 
   const checkDuration = () => {
     const now = new Date().getTime();
@@ -45,9 +46,9 @@ const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) 
 
     if (remainingTime <= 0) {
       clearInterval(interval);
-      // TODO: show expiredModal
+      setShowExpiredModal(() => true);
     } else if (remainingTime < duration * 0.3) {
-      // TODO: show warnModal
+      setShowWarnModal(() => true);
     }
   }, [remainingTime]);
 
@@ -68,10 +69,10 @@ const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) 
         <span>{seconds}</span>
       </div>
       {
-        warnModal || <SessionModal text="The session will soon expire!" title="Warning!" modalFooter={<SessionWarnModalFooter />} />
+        warnModal || <SessionModal cancellable show={showWarnModal} text="The session will soon expire!" title="Warning!" modalFooter={<SessionWarnModalFooter />} />
       }
       {
-        expiredModal || <SessionModal text="The session is expired!" title="" modalFooter={<SessionExpiredModalFooter />} />
+        expiredModal || <SessionModal cancellable={false} show={showExpiredModal} text="The session is expired!" title="" modalFooter={<SessionExpiredModalFooter />} />
       }
     </>
   );

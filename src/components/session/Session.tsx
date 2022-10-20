@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import SessionExpiredModalFooter from '../session-expired-modal-footer/SessionExpiredModalFooter';
 import SessionModal from '../session-modal/SessionModal';
 import SessionWarnModalFooter from '../session-warn-modal-footer/SessionWarnModalFooter';
@@ -11,7 +11,7 @@ interface Props {
 
 const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) => {
   const startTime = new Date().getTime() + duration * 1000;
-  let interval: number;
+  const intervalId = useRef<number>(0);
   const [hours, setHours] = useState<string>();
   const [minutes, setMinutes] = useState<string>();
   const [seconds, setSeconds] = useState<string>();
@@ -23,8 +23,6 @@ const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) 
     const now = new Date().getTime();
     const distance = startTime - now; // ms
     setRemainingTime(() => Math.floor(distance / 1000));
-
-    interval = window.setInterval(checkDuration, 1000);
   };
 
   const getRemainingTimeFractionString = (timeFraction: number) => {
@@ -33,6 +31,12 @@ const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) 
     }
 
     return `${timeFraction}`;
+  };
+
+  const resetSession = () => {
+    setRemainingTime(() => startTime); // TODO: set correct start time
+    intervalId.current = window.setInterval(checkDuration, 1000);
+    setShowExpiredModal(() => false);
   };
 
   useEffect(() => {
@@ -46,8 +50,12 @@ const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) 
     setMinutes(() => getRemainingTimeFractionString(remainingMinutes));
     setSeconds(() => getRemainingTimeFractionString(remainingSeconds));
 
+    console.log('remainingTime: ', remainingTime);
+    console.log('remainingSeconds: ', remainingSeconds);
+
     if (remainingTime <= 0) {
-      clearInterval(interval);
+      console.log('cleared interval', intervalId.current);
+      clearInterval(intervalId.current);
       setShowExpiredModal(() => true);
     } else if (remainingTime < duration * 0.3) {
       setShowWarnModal(() => true);
@@ -57,7 +65,10 @@ const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) 
   useEffect(() => {
     checkDuration();
 
-    return () => clearInterval(interval);
+    intervalId.current = window.setInterval(checkDuration, 1000);
+    console.log('new interval', intervalId.current);
+
+    return () => window.clearInterval(intervalId.current);
   }, []);
 
   return (
@@ -74,7 +85,7 @@ const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) 
         warnModal || <SessionModal cancellable show={showWarnModal} text="The session will soon expire!" title="Warning!" modalFooter={<SessionWarnModalFooter onOkClick={() => setShowWarnModal(false)} />} />
       }
       {
-        expiredModal || <SessionModal cancellable={false} show={showExpiredModal} text="The session is expired!" title="" modalFooter={<SessionExpiredModalFooter onResetClick={() => checkDuration()} />} />
+        expiredModal || <SessionModal cancellable={false} show={showExpiredModal} text="The session is expired!" title="" modalFooter={<SessionExpiredModalFooter onResetClick={resetSession} />} />
       }
     </>
   );

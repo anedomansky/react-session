@@ -1,3 +1,10 @@
-dialog:not([open]) {
-  display: none;
+.session-modal {
+  border: 0;
+  border-radius: 5px;
 }
+
+.session-modal::backdrop {
+  background-color: #777;
+  opacity: 0.3;
+}
+

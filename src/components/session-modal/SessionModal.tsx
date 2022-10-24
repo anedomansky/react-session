@@ -1,4 +1,4 @@
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect, useRef } from 'react';
 import './SessionModal.css';
 
 interface Props {
@@ -15,14 +15,30 @@ interface Props {
 const SessionModal: React.FC<Props> = ({
   cancellable, children, modalBody, modalFooter, modalHeader, show, text, title,
 }) => {
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
+
   const handleCancel = (event: SyntheticEvent<HTMLDialogElement, Event>) => {
     if (cancellable) {
       event.preventDefault();
     }
   };
 
+  useEffect(() => {
+    const dialogNode = dialogRef.current;
+
+    if (!dialogNode) {
+      return;
+    }
+
+    if (show) {
+      dialogNode.showModal();
+    } else {
+      dialogNode.close();
+    }
+  }, [show]);
+
   return (
-    <dialog className="session-modal" onCancel={handleCancel} open={show}>
+    <dialog className="session-modal" onCancel={handleCancel} ref={dialogRef}>
       {modalHeader || (title && <h2 className="session-modal__header">{title}</h2>)}
       {modalBody || (text && <div className="session-modal__body">{text}</div>)}
       {modalFooter}

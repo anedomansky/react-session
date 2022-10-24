@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) => {
-  const startTime = new Date().getTime() + duration * 1000;
+  let startTime = new Date().getTime() + duration * 1000;
   const intervalId = useRef<number>(0);
   const [hours, setHours] = useState<string>();
   const [minutes, setMinutes] = useState<string>();
@@ -34,7 +34,8 @@ const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) 
   };
 
   const resetSession = () => {
-    setRemainingTime(() => startTime); // TODO: set correct start time
+    startTime = new Date().getTime() + duration * 1000;
+    checkDuration();
     intervalId.current = window.setInterval(checkDuration, 1000);
     setShowExpiredModal(() => false);
   };
@@ -50,12 +51,9 @@ const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) 
     setMinutes(() => getRemainingTimeFractionString(remainingMinutes));
     setSeconds(() => getRemainingTimeFractionString(remainingSeconds));
 
-    console.log('remainingTime: ', remainingTime);
-    console.log('remainingSeconds: ', remainingSeconds);
-
     if (remainingTime <= 0) {
-      console.log('cleared interval', intervalId.current);
       clearInterval(intervalId.current);
+      setShowWarnModal(() => false);
       setShowExpiredModal(() => true);
     } else if (remainingTime < duration * 0.3) {
       setShowWarnModal(() => true);
@@ -66,9 +64,8 @@ const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) 
     checkDuration();
 
     intervalId.current = window.setInterval(checkDuration, 1000);
-    console.log('new interval', intervalId.current);
 
-    return () => window.clearInterval(intervalId.current);
+    return () => clearInterval(intervalId.current);
   }, []);
 
   return (

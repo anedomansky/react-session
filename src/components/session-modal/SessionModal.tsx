@@ -2,6 +2,7 @@ import { SyntheticEvent, useEffect, useRef } from 'react';
 import './SessionModal.css';
 
 interface Props {
+  additionalClasses?: string;
   cancellable?: boolean;
   children?: React.ReactNode;
   modalBody?: React.ReactNode;
@@ -13,7 +14,7 @@ interface Props {
 }
 
 const SessionModal: React.FC<Props> = ({
-  cancellable, children, modalBody, modalFooter, modalHeader, show, text, title,
+  additionalClasses, cancellable, children, modalBody, modalFooter, modalHeader, show, text, title,
 }) => {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
 
@@ -38,7 +39,7 @@ const SessionModal: React.FC<Props> = ({
   }, [show]);
 
   return (
-    <dialog className="session-modal" onCancel={handleCancel} ref={dialogRef}>
+    <dialog className={`session-modal ${additionalClasses}`} onCancel={handleCancel} ref={dialogRef}>
       {modalHeader || (title && <h2 className="session-modal__header">{title}</h2>)}
       {modalBody || (text && <div className="session-modal__body">{text}</div>)}
       {modalFooter}

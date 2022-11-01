@@ -5,10 +5,13 @@ import SessionModalFooter from '../session-modal-footer/SessionModalFooter';
 interface Props {
   duration?: number;
   expiredModal?: React.ReactNode;
+  sessionInfoText?: string;
   warnModal?: React.ReactNode;
 }
 
-const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) => {
+const Session: React.FC<Props> = ({
+  duration = 1800, expiredModal, sessionInfoText = 'Session', warnModal,
+}) => {
   let startTime = new Date().getTime() + duration * 1000;
   const intervalId = useRef<number>(0);
   const [hours, setHours] = useState<string>();
@@ -70,7 +73,8 @@ const Session: React.FC<Props> = ({ duration = 1800, expiredModal, warnModal }) 
   return (
     <>
       <div>
-        SessionModalButton
+        <span>{`${sessionInfoText}:`}</span>
+        <br />
         <span>{hours}</span>
         <span>:</span>
         <span>{minutes}</span>

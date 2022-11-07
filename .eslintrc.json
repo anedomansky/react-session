@@ -10,7 +10,8 @@
   "plugins": [
     "@typescript-eslint",
     "react",
-    "jsx-a11y"
+    "jsx-a11y",
+    "prettier"
   ],
   "env": {
     "browser": true
@@ -21,7 +22,8 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:react/jsx-runtime"
+    "plugin:react/jsx-runtime",
+    "plugin:prettier/recommended"
   ],
   "settings": {
     "react": {
@@ -66,6 +68,17 @@
         "ignore": [
           "onCancel"
         ]
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "useTabs": false,
+        "tabWidth": 2,
+        "semi": true,
+        "bracketSpacing": true,
+        "endOfLine": "auto"
       }
     ]
   }

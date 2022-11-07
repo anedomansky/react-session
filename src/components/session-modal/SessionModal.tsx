@@ -14,7 +14,15 @@ interface Props {
 }
 
 const SessionModal: React.FC<Props> = ({
-  additionalClasses, cancellable, children, modalBody, modalFooter, modalHeader, show, text, title,
+  additionalClasses,
+  cancellable,
+  children,
+  modalBody,
+  modalFooter,
+  modalHeader,
+  show,
+  text,
+  title,
 }) => {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
 
@@ -39,8 +47,13 @@ const SessionModal: React.FC<Props> = ({
   }, [show]);
 
   return (
-    <dialog className={`session-modal ${additionalClasses}`} onCancel={handleCancel} ref={dialogRef}>
-      {modalHeader || (title && <h2 className="session-modal__header">{title}</h2>)}
+    <dialog
+      className={`session-modal ${additionalClasses || ''}`}
+      onCancel={handleCancel}
+      ref={dialogRef}
+    >
+      {modalHeader ||
+        (title && <h2 className="session-modal__header">{title}</h2>)}
       {modalBody || (text && <div className="session-modal__body">{text}</div>)}
       {modalFooter}
       {children}

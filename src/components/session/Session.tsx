@@ -3,14 +3,19 @@ import SessionModal from '../session-modal/SessionModal';
 import SessionModalFooter from '../session-modal-footer/SessionModalFooter';
 
 interface Props {
+  /**
+   * @default 1800 (s)
+   */
   duration?: number;
-  expiredModal?: React.ReactNode;
+  /**
+   * @default 'Session'
+   */
   sessionInfoText?: string;
-  warnModal?: React.ReactNode;
 }
 
 const Session: React.FC<Props> = ({
-  duration = 1800, expiredModal, sessionInfoText = 'Session', warnModal,
+  duration = 1800,
+  sessionInfoText = 'Session',
 }) => {
   let startTime = new Date().getTime() + duration * 1000;
   const intervalId = useRef<number>(0);
@@ -73,7 +78,7 @@ const Session: React.FC<Props> = ({
   return (
     <>
       <div>
-        <span>{`${sessionInfoText}:`}</span>
+        <span>{sessionInfoText}</span>
         <br />
         <span>{hours}</span>
         <span>:</span>
@@ -81,12 +86,25 @@ const Session: React.FC<Props> = ({
         <span>:</span>
         <span>{seconds}</span>
       </div>
-      {
-        warnModal || <SessionModal cancellable show={showWarnModal} text="The session will soon expire!" title="Warning!" modalFooter={<SessionModalFooter text="OK" onClick={() => setShowWarnModal(false)} />} />
-      }
-      {
-        expiredModal || <SessionModal cancellable={false} show={showExpiredModal} text="The session is expired!" title="Expired!" modalFooter={<SessionModalFooter text="Reset" onClick={resetSession} />} />
-      }
+      <SessionModal
+        cancellable
+        show={showWarnModal}
+        text="The session will soon expire!"
+        title="Warning!"
+        modalFooter={
+          <SessionModalFooter
+            text="OK"
+            onClick={() => setShowWarnModal(false)}
+          />
+        }
+      />
+      <SessionModal
+        cancellable={false}
+        show={showExpiredModal}
+        text="The session is expired!"
+        title="Expired!"
+        modalFooter={<SessionModalFooter text="Reset" onClick={resetSession} />}
+      />
     </>
   );
 };

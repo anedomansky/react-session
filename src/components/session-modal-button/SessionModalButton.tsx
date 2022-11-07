@@ -12,7 +12,11 @@ const SessionModalButton: React.FC<Props> = ({ children, onClick }) => {
     }
   };
 
-  return (<button onClick={handleClick} type="button">{children}</button>);
+  return (
+    <button onClick={handleClick} type="button">
+      {children}
+    </button>
+  );
 };
 
 export default SessionModalButton;

@@ -1,4 +1,6 @@
 import Session from './components/session/Session';
+import SessionModal from './components/session-modal/SessionModal';
+import SessionModalButton from './components/session-modal-button/SessionModalButton';
+import SessionModalFooter from './components/session-modal-footer/SessionModalFooter';
 
-// eslint-disable-next-line import/prefer-default-export
-export { Session };
+export { Session, SessionModalButton, SessionModalFooter, SessionModal };

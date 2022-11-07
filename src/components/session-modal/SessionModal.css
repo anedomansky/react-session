@@ -1,8 +1,13 @@
 .session-modal {
-  background-color: #fff;
+  background-color: #242424;
   border: 0;
   border-radius: 5px;
-  color: #000;
+  color: #ffffffde;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  min-height: 200px;
+  min-width: 300px;
 }
 
 .session-modal::backdrop {
@@ -10,3 +15,25 @@
   opacity: 0.3;
 }
 
+.session-modal:not([open]) {
+  display: none;
+}
+
+.session-modal__header {
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+@media (prefers-color-scheme: light) {
+  .session-modal {
+    background-color: #ffffffde;
+    color: #242424;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .session-modal {
+    background-color: #242424;
+    color: #ffffffde;
+  }
+}

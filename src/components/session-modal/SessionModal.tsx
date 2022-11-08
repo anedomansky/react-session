@@ -5,9 +5,6 @@ interface Props {
   additionalClasses?: string;
   cancellable?: boolean;
   children?: React.ReactNode;
-  modalBody?: React.ReactNode;
-  modalFooter?: React.ReactNode;
-  modalHeader?: React.ReactNode;
   show?: boolean;
   text?: string;
   title?: string;
@@ -17,9 +14,6 @@ const SessionModal: React.FC<Props> = ({
   additionalClasses,
   cancellable,
   children,
-  modalBody,
-  modalFooter,
-  modalHeader,
   show,
   text,
   title,
@@ -27,7 +21,7 @@ const SessionModal: React.FC<Props> = ({
   const dialogRef = useRef<HTMLDialogElement | null>(null);
 
   const handleCancel = (event: SyntheticEvent<HTMLDialogElement, Event>) => {
-    if (cancellable) {
+    if (!cancellable) {
       event.preventDefault();
     }
   };
@@ -52,10 +46,8 @@ const SessionModal: React.FC<Props> = ({
       onCancel={handleCancel}
       ref={dialogRef}
     >
-      {modalHeader ||
-        (title && <h2 className="session-modal__header">{title}</h2>)}
-      {modalBody || (text && <div className="session-modal__body">{text}</div>)}
-      {modalFooter}
+      {title && <h2 className="session-modal__header">{title}</h2>}
+      {text && <div className="session-modal__body">{text}</div>}
       {children}
     </dialog>
   );

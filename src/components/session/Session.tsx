@@ -4,18 +4,76 @@ import SessionModalFooter from '../session-modal-footer/SessionModalFooter';
 
 interface Props {
   /**
-   * @default 1800 (s)
+   * Space separated CSS classes for the &lt;dialog&gt;.
+   */
+  additionalExpiredModalClasses?: string;
+  /**
+   * Space separated CSS classes for the &lt;dialog&gt;.
+   */
+  additionalWarnModalClasses?: string;
+  /**
+   * The duration of the session in seconds.
+   * @default 1800
    */
   duration?: number;
   /**
+   * The expired modal button text.
+   * @default 'Reset'
+   */
+  expiredModalBtnText?: string;
+  /**
+   * The expired modal text.
+   * @default 'The session is expired!'
+   */
+  expiredModalText?: string;
+  /**
+   * The expired modal title.
+   * @default 'Expired!'
+   */
+  expiredModalTitle?: string;
+  /**
+   * The text that is shown above the session timer.
    * @default 'Session'
    */
   sessionInfoText?: string;
+  /**
+   * Callback, triggered when the expired modal button is clicked.
+   */
+  onExpiredModalBtnClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  /**
+   * Callback, triggered when the warn modal button is clicked.
+   */
+  onWarnModalBtnClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  /**
+   * The warn modal button text.
+   * @default 'OK'
+   */
+  warnModalBtnText?: string;
+  /**
+   * The warn modal text.
+   * @default 'The session will soon expire!'
+   */
+  warnModalText?: string;
+  /**
+   * The warn modal title.
+   * @default 'Warning!'
+   */
+  warnModalTitle?: string;
 }
 
 const Session: React.FC<Props> = ({
+  additionalExpiredModalClasses,
+  additionalWarnModalClasses,
   duration = 1800,
+  expiredModalBtnText = 'Reset',
+  expiredModalText = 'The session is expired!',
+  expiredModalTitle = 'Expired!',
   sessionInfoText = 'Session',
+  onExpiredModalBtnClick,
+  onWarnModalBtnClick,
+  warnModalBtnText = 'OK',
+  warnModalText = 'The session will soon expire!',
+  warnModalTitle = 'Warning!',
 }) => {
   let startTime = new Date().getTime() + duration * 1000;
   const intervalId = useRef<number>(0);
@@ -45,6 +103,24 @@ const Session: React.FC<Props> = ({
     checkDuration();
     intervalId.current = window.setInterval(checkDuration, 1000);
     setShowExpiredModal(() => false);
+  };
+
+  const handleWarnModalClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setShowWarnModal(() => false);
+
+    if (onWarnModalBtnClick) {
+      onWarnModalBtnClick(event);
+    }
+  };
+
+  const handleExpiredModalClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    resetSession();
+
+    if (onExpiredModalBtnClick) {
+      onExpiredModalBtnClick(event);
+    }
   };
 
   useEffect(() => {
@@ -87,24 +163,29 @@ const Session: React.FC<Props> = ({
         <span>{seconds}</span>
       </div>
       <SessionModal
+        additionalClasses={additionalWarnModalClasses}
         cancellable
         show={showWarnModal}
-        text="The session will soon expire!"
-        title="Warning!"
-        modalFooter={
-          <SessionModalFooter
-            text="OK"
-            onClick={() => setShowWarnModal(false)}
-          />
-        }
-      />
+        text={warnModalText}
+        title={warnModalTitle}
+      >
+        <SessionModalFooter
+          text={warnModalBtnText}
+          onClick={handleWarnModalClick}
+        />
+      </SessionModal>
       <SessionModal
+        additionalClasses={additionalExpiredModalClasses}
         cancellable={false}
         show={showExpiredModal}
-        text="The session is expired!"
-        title="Expired!"
-        modalFooter={<SessionModalFooter text="Reset" onClick={resetSession} />}
-      />
+        text={expiredModalText}
+        title={expiredModalTitle}
+      >
+        <SessionModalFooter
+          text={expiredModalBtnText}
+          onClick={handleExpiredModalClick}
+        />
+      </SessionModal>
     </>
   );
 };

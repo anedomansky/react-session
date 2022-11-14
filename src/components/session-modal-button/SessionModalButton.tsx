@@ -13,7 +13,11 @@ const SessionModalButton: React.FC<Props> = ({ children, onClick }) => {
   };
 
   return (
-    <button onClick={handleClick} type="button">
+    <button
+      className="session-modal-button"
+      onClick={handleClick}
+      type="button"
+    >
       {children}
     </button>
   );
